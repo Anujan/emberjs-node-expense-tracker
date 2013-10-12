@@ -6,6 +6,7 @@ This is an expense tracking web app I created to help me get familiar with NodeJ
 ### Local
 * Clone the repo
 * run the following commands 
+*    
         npm install
         node app.js
 * The app should be running at [localhost:3000](http://localhost:3000)
@@ -13,6 +14,7 @@ This is an expense tracking web app I created to help me get familiar with NodeJ
 ###Heroku
 * Clone the repo
 * run the following commands
+*     
         heroku create
         git push heroku master
         heroku config:set NODE_ENV=production
