@@ -43,12 +43,11 @@ App.ApplicationController = Ember.ArrayController.extend({
   totalExpenses: function() {
     var total = 0;
     var expenses = this.get("content");
-    console.log(expenses);
     expenses.forEach(function(expense) {
       total += parseInt(expense.get("amount"));
     });
     return total;
-  }.property('content'),
+  }.property('content.@each.amount'),
   actions: {
     addExpense: function() {
       var expense = this.get("newExpense");
