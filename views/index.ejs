@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Expense Tracker</title>
+    <meta name="description" content="Logs your expenses">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+</head>
+<body>
+    <!--[if lt IE 7]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <div class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="../">Expense Tracker</a>
+                </div>
+            </div>  
+        </div>
+        <div class="container" id="ember-app" style="margin-top:60px">
+          <script type="text/x-handlebars" data-template-name="application">
+            <div class="col-lg-6 center well">
+            <form {{action addExpense on="submit"}} class="form-horizontal">
+                <fieldset>
+                    {{#if error}}
+                        <div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert">×</button>{{error}}</div>
+                    {{/if}}
+                    <legend>Log an expense</legend>
+                    <div class="form-group">
+                        <label for="date_field" class="control-label">Date of Expense</label>
+                        {{view App.DateField dateBinding="newExpense.date" classNames="form-control" id="date_field" placeholder="Date of Expense"}}
+                    </div>
+                    <div class="form-group">
+                        <label for="title" class="control-label">Name</label>
+                        {{view Ember.TextField valueBinding="newExpense.title" classNames="form-control" id="title" placeholder="Name of Expense"}}
+                    </div>
+                    <div class="form-group">
+                        <label for="amount" class="control-label">Amount</label>
+                        <div class="input-group">
+                            <span class="input-group-addon">$</span>
+                            {{view Ember.TextField valueBinding="newExpense.amount" classNames="form-control" placeholder="Expense Amount"}}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-block btn-primary">Add Expense</button>
+                    </div>
+                </fieldset>
+            </form>
+            </div>
+            <hr>
+            <div class="col-lg-6 center">
+                <table class="table table-striped">
+                    <thead><tr>
+                        <td>Date</td><td>Expense</td><td>Amount</td><td></td>
+                    </tr></thead>
+                    <tbody>
+                        {{#each expenses}}
+                        <tr>
+                            <td>{{format-date date}}</td>
+                            <td>{{title}}</td>
+                            <td>{{currency amount}}</td>
+                            <td><button class="btn btn-danger btn-sm" {{action deleteExpense this}}>Delete</button></td>
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+          {{outlet}}
+          </script>
+      </div>
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+      <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
+      <script type="text/javascript" src="js/vendor/moment.js"></script>
+      <script type="text/javascript" src="js/vendor/handlebars.js"></script>
+      <script type="text/javascript" src="js/vendor/ember-dev.js"></script>
+      <script type="text/javascript" src="js/application.js"></script>
+  </body>
+  </html>
