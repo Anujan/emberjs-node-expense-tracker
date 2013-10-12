@@ -56,12 +56,13 @@
             </div>
             <hr>
             <div class="col-lg-6 center">
+                <h4>Total Expenses: {{currency totalExpenses}}</h4>
                 <table class="table table-striped">
                     <thead><tr>
                         <td>Date</td><td>Expense</td><td>Amount</td><td></td>
                     </tr></thead>
                     <tbody>
-                        {{#each expenses}}
+                        {{#each this}}
                         <tr>
                             <td>{{format-date date}}</td>
                             <td>{{title}}</td>

@@ -29,7 +29,7 @@ App.ApplicationRoute = Ember.Route.extend({
         response.forEach(function(child) {
           e.pushObject(App.Expense.create(child));
         });
-        controller.set("expenses", e);
+        controller.set("content", e);
         return e;
       }
       );
@@ -37,9 +37,18 @@ App.ApplicationRoute = Ember.Route.extend({
   }
 });
 
-App.ApplicationController = Ember.Controller.extend({
-  expenses: Em.A(),
+App.ApplicationController = Ember.ArrayController.extend({
+  content: Em.A(), //Expenses array
   error: null,
+  totalExpenses: function() {
+    var total = 0;
+    var expenses = this.get("content");
+    console.log(expenses);
+    expenses.forEach(function(expense) {
+      total += parseInt(expense.get("amount"));
+    });
+    return total;
+  }.property('content'),
   actions: {
     addExpense: function() {
       var expense = this.get("newExpense");
@@ -64,7 +73,7 @@ App.ApplicationController = Ember.Controller.extend({
         self = this;
         $.post("/expense", post_data)
         .done(function(response) {
-          var e = self.get('expenses');
+          var e = self.get('content');
           e.pushObject(App.Expense.create(response));
           self.set('newExpense', App.Expense.create({}));
         })
@@ -80,7 +89,7 @@ App.ApplicationController = Ember.Controller.extend({
         type: 'DELETE'
       })
       .done(function(response) {
-        var e = self.get("expenses");
+        var e = self.get("content");
         e.removeObject(expense);
       })
       .fail(function(response) {
