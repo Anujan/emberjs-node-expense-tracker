@@ -103,3 +103,22 @@ Ember.Handlebars.helper('format-date', function(value, options) {
     d = new Date(value);
   return moment(d).format('MMMM Do YYYY');
 });
+
+App.DatePicker = Ember.TextField.extend({
+  classNames: ['datepicker'],
+  didInsertElement: function() {
+    return this.$().datepicker({todayBtn: true,
+todayHighlight: true});
+  },
+  textToDateTransform: (function(key, value) {
+    if (arguments.length === 2) {
+      return this.set('date', new Date(value));
+    } else if (!value && this.get('date')) {
+      return moment(this.get('date')).format('MM/DD/YYYY');
+    } else {
+      return value;
+    }
+  }).property(),
+  size: 8,
+  valueBinding: "textToDateTransform"
+});
