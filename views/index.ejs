@@ -11,6 +11,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/flick/jquery-ui.css">
+    <link href="css/tagit.css" rel="stylesheet" type="text/css">
     <script src="js/vendor/modernizr-2.6.2.min.js"></script>
 </head>
 <body>
@@ -49,6 +51,12 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label for="tags" class="control-label">Tags</label>
+                        <div class="tag-it-input-group">
+                            {{view App.TagField valueBinding="newExpense.tags" classNames="form-control" placeholder="Tags (Work, Food, School)" id="tags"}}
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <button type="submit" class="btn btn-block btn-primary">Add Expense</button>
                     </div>
                 </fieldset>
@@ -59,7 +67,7 @@
                 <h4>Total Expenses: {{currency totalExpenses}}</h4>
                 <table class="table table-striped">
                     <thead><tr>
-                        <td>Date</td><td>Expense</td><td>Amount</td><td></td>
+                        <td>Date</td><td>Expense</td><td>Amount</td><td>Tags</td><td></td>
                     </tr></thead>
                     <tbody>
                         {{#each this}}
@@ -67,6 +75,11 @@
                             <td>{{format-date date}}</td>
                             <td>{{title}}</td>
                             <td>{{currency amount}}</td>
+                            <td><ul id="myTags">
+                                {{#each tags}}
+                                    <li>{{this}}</li>
+                                {{/each}}
+                            </ul></td>
                             <td><button class="btn btn-danger btn-sm" {{action deleteExpense this}}>Delete</button></td>
                             </tr>
                         {{/each}}
@@ -78,7 +91,9 @@
       </div>
       <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
       <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
       <script type="text/javascript" src="js/vendor/moment.js"></script>
+      <script type="text/javascript" src="js/vendor/tagit.min.js"></script>
       <script type="text/javascript" src="js/vendor/handlebars.js"></script>
       <script type="text/javascript" src="js/vendor/bootstrap-datepicker.js"></script>
       <script type="text/javascript" src="js/vendor/ember<% if (process.env.NODE_ENV !== "production") { %>-dev<% } %>.js"></script>

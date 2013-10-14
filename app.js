@@ -71,6 +71,8 @@ function validateExpense(expense) {
 		error = "The amount you provided is not numeric.";
 	} else if (!expense.title || expense.title.length > 150 || expense.title.length < 3) {
 		error = "The title must be between 3 and 150 characters long.";
+	} else if (!expense.tags || expense.tags.length < 1 || expense.tags.length > 10) {
+		error = "You must have at least 1 tag, with a maximum of 10.";
 	}
 	return error ? {"error": error} : expense;
 }

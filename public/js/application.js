@@ -1,8 +1,8 @@
 window.App = Ember.Application.create({
   rootElement: '#ember-app'
 });
-App.Expense = Ember.Object.extend({
-});
+
+App.Expense = Ember.Object.extend({});
 
 App.DateField = Ember.TextField.extend({
   type: 'date',
@@ -20,6 +20,42 @@ App.DateField = Ember.TextField.extend({
     return date;
   }.property('value')
 });
+
+App.TagField = Ember.TextField.extend({
+  didInsertElement: function() {
+    this.$().tagit({
+      fieldName: "tags",
+      autocomplete: {
+        delay: 0,
+        minLength: 2
+      },
+      showAutocompleteOnFocus: true,
+      removeConfirmation: false,
+      caseSensitive: false,
+      allowDuplicates: false,
+      allowSpaces: false,
+      readOnly: false,
+      tagLimit: 4,
+      singleField: false,
+      singleFieldDelimiter: ',',
+      singleFieldNode: null,
+      tabIndex: null,
+      placeholderText: null,
+    });
+  }
+});
+
+Ember.View.reopen({
+  didInsertElement : function(){
+    this._super();
+    Ember.run.scheduleOnce('afterRender', this, this.afterRenderEvent);
+  },
+  afterRenderEvent : function(){
+    $("#myTags").tagit({readOnly: true}).removeClass("ui-widget-content");
+    $("#myTags .tagit-new").hide();
+  }
+});
+
 
 App.ApplicationRoute = Ember.Route.extend({
   setupController: function(controller) {
@@ -54,7 +90,8 @@ App.ApplicationController = Ember.ArrayController.extend({
       var post_data = {
         title: expense.get("title"),
         amount: expense.get("amount"),
-        date: expense.get("date")
+        date: expense.get("date"),
+        tags: expense.get("tags").split(",")
       };
       this.set("error", null);
       var validationErrors = true;
@@ -65,6 +102,8 @@ App.ApplicationController = Ember.ArrayController.extend({
         this.set("error", "The amount you provided is not numeric.");
       } else if (!post_data.title || post_data.title.length > 150 || post_data.title.length < 3) {
         this.set("error", "The title must be between 3 and 150 characters long.");
+      } else if (!post_data.tags || post_data.tags.length < 1 || post_data.tags.length > 10) {
+        this.set("error", "You must have at least 1 tag, with a maximum of 10 tags.");
       } else {
         validationErrors = false;
       }
@@ -116,7 +155,7 @@ App.DatePicker = Ember.TextField.extend({
   classNames: ['datepicker'],
   didInsertElement: function() {
     return this.$().datepicker({todayBtn: true,
-todayHighlight: true});
+      todayHighlight: true});
   },
   textToDateTransform: (function(key, value) {
     if (arguments.length === 2) {
